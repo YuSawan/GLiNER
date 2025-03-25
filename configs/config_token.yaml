@@ -1,5 +1,6 @@
 # Model Configuration
 model_name: microsoft/deberta-v3-small  # Hugging Face model
+labels_encoder: null
 name: "token level gliner"
 max_width: 100
 hidden_size: 768
