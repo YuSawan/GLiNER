@@ -20,7 +20,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output_dir", type=str, default="logs", help="Path to model folder")
     parser.add_argument('--data', type=str, default='data/ie_data/NER/', help='Path to the eval datasets directory')
     parser.add_argument('--batch_size', type=int, default=8)
-    parser.add_argument('--num_epochs', type=int, default=5000)
+    parser.add_argument('--num_steps', type=int, default=5000)
     return parser
 
 
@@ -48,6 +48,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     train_dataset, test_dataset = get_dataset(args.data)
+    num_batches = len(train_dataset) // args.batch_size
+    num_epochs = max(1, args.num_steps // num_batches)
 
     device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
     model = GLiNER.from_pretrained(args.model)
@@ -64,7 +66,7 @@ if __name__ == '__main__':
         per_device_eval_batch_size=args.batch_size,
         focal_loss_alpha=0.75,
         focal_loss_gamma=2,
-        num_train_epochs=args.num_epochs,
+        num_train_epochs=num_epochs,
         evaluation_strategy="steps",
         save_steps = 100,
         save_total_limit=10,
