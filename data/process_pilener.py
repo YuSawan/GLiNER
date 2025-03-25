@@ -1,7 +1,9 @@
+import ast
 import json
 import re
-import ast
+
 from tqdm import tqdm
+
 
 def load_data(filepath):
     """Loads data from a JSON file."""
@@ -58,7 +60,7 @@ def save_data_to_file(data, filepath):
         json.dump(data, f)
 
 if __name__ == "__main__":
-    # download the pile-ner data: "wget https://huggingface.co/datasets/Universal-NER/Pile-NER-type/blob/main/train.json"
+    # download the pile-ner data: "wget https://huggingface.co/datasets/Universal-NER/Pile-NER-type/resolve/main/train.json"
     path_pile_ner = 'train.json'
     data = load_data(path_pile_ner)
     processed_data = process_data(data)
