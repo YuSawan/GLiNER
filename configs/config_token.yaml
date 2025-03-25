@@ -30,8 +30,8 @@ weight_decay_other: 0.01
 max_grad_norm: 1.0
 
 # Directory Paths
-root_dir: gliner_logs
-train_data: "train.json" # see https://github.com/urchade/GLiNER/tree/main/data
+root_dir: token_gliner_logs
+train_data: "data/pilener_train.json" #"data/nuner_train.json" # see https://github.com/urchade/GLiNER/tree/main/data
 val_data_dir: "NER_datasets"
 # "NER_datasets": val data from the paper can be obtained from "https://drive.google.com/file/d/1T-5IbocGka35I7X3CE6yKe5N_Xg2lVKT/view"
 
