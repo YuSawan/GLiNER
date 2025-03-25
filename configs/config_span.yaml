@@ -1,5 +1,6 @@
 # Model Configuration
 model_name: microsoft/deberta-v3-small  # Hugging Face model
+labels_encoder: null
 name: "span level gliner"
 max_width: 12
 hidden_size: 768
