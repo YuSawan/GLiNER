@@ -37,7 +37,7 @@ val_data_dir: "none"
 
 # Pretrained Model Path
 # Use "none" if no pretrained model is being used
-prev_path: "none"
+prev_path: null
 
 save_total_limit: 10 #maximum amount of checkpoints to save
 
