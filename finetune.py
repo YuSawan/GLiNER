@@ -13,6 +13,7 @@ from gliner.data_processing.collator import DataCollator
 from gliner.evaluation.evaluate import create_dataset
 from gliner.training import Trainer, TrainingArguments
 
+random.seed(10000)
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Span-based NER")
