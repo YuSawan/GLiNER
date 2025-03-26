@@ -1,8 +1,7 @@
 import argparse
-import glob
+import json
 import os
 import random
-from typing import Any
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
@@ -10,10 +9,9 @@ import torch
 
 from gliner import GLiNER
 from gliner.data_processing.collator import DataCollator
-from gliner.evaluation.evaluate import create_dataset
 from gliner.training import Trainer, TrainingArguments
 
-random.seed(10000)
+random.seed(1000)
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Span-based NER")
@@ -25,30 +23,18 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def get_dataset(data_paths: list[str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    all_paths = glob.glob(f"{data_paths}/*")
-    all_paths = sorted(all_paths)
-    all_data = []
-    for p in all_paths:
-        if "sample_" not in p:
-            train_dataset, _, _, _ = create_dataset(p)
-            random.shuffle(train_dataset)
-            all_data.extend(train_dataset[:10000])
-
-    print('Dataset size:', len(all_data))
-    print('Dataset is shuffled...')
-    random.shuffle(all_data)
-    train_dataset = all_data[:int(len(all_data)*0.9)]
-    test_dataset = all_data[int(len(all_data)*0.9):]
-
-    return train_dataset, test_dataset
-
-
 if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    train_dataset, test_dataset = get_dataset(args.data)
+    with open(args.data, 'r') as f:
+        data = json.load(f)
+    print('Dataset size:', len(data))
+    random.shuffle(data)
+    print('Dataset is shuffled...')
+    train_dataset = data[:int(len(data)*0.9)]
+    test_dataset = data[int(len(data)*0.9):]
+
     num_batches = len(train_dataset) // args.batch_size
     num_epochs = max(1, args.num_steps // num_batches)
 
