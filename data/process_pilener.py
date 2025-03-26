@@ -1,21 +1,18 @@
 import ast
 import json
 import re
+from typing import Any
 
+from datasets import Dataset, load_dataset
 from tqdm import tqdm
 
 
-def load_data(filepath):
-    """Loads data from a JSON file."""
-    with open(filepath, 'r') as f:
-        data = json.load(f)
-    return data
-
-def tokenize_text(text):
+def tokenize_text(text: str) -> list[str]:
     """Tokenizes the input text into a list of tokens."""
     return re.findall(r'\w+(?:[-_]\w+)*|\S', text)
 
-def extract_entity_spans(entry):
+
+def extract_entity_spans(entry: dict[str, Any]) -> dict[str, list[Any]]:
     """Extracts entity spans from an entry."""
     len_start = len("What describes ")
     len_end = len(" in the text?")
@@ -49,21 +46,22 @@ def extract_entity_spans(entry):
 
     return {"tokenized_text": tokenized_text, "ner": entity_spans, "negative": negative}
 
-def process_data(data):
+
+def process_data(data: Dataset) -> list[dict[str, list[Any]]]:
     """Processes a list of data entries to extract entity spans."""
     all_data = [extract_entity_spans(entry) for entry in tqdm(data)]
     return all_data
 
-def save_data_to_file(data, filepath):
+
+def save_data_to_file(data:list[dict[str, list[Any]]], filepath: str) -> None:
     """Saves the processed data to a JSON file."""
     with open(filepath, 'w') as f:
         json.dump(data, f)
 
+
 if __name__ == "__main__":
-    # download the pile-ner data: "wget https://huggingface.co/datasets/Universal-NER/Pile-NER-type/resolve/main/train.json"
-    path_pile_ner = 'train.json'
-    data = load_data(path_pile_ner)
-    processed_data = process_data(data)
+    data = load_dataset('Universal-NER/Pile-NER-type')
+    processed_data = process_data(data['train'])
     save_data_to_file(processed_data, 'pilener_train.json')
 
     print("dataset size:", len(processed_data))
