@@ -110,5 +110,5 @@ if __name__ == "__main__":
     processed_data = process_data(data['train'], anonym_type = ANONYMIZE)
     print(processed_data[0])
     print("dataset size:", len(processed_data))
-    save_data_to_file(processed_data, f'pilener_train_anonymize_{ANONYMIZE}.json')
+    save_data_to_file(processed_data, f'pilener_train_anonymize_{ANONYMIZE}.jsonl')
 
