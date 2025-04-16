@@ -95,7 +95,7 @@ def process_data(data: Dataset, anonym_type: str) -> list[dict[str, list[Any]]]:
                             break
                 label = anonymized_label
             ner.append((s, e, label))
-        all_data.append({"tokenized_text": tokens, "ner": ner, "negative": p_data["negative"]})
+        all_data.append({"tokenized_text": tokens, "ner": ner, "negative": []})
     return all_data
 
 
